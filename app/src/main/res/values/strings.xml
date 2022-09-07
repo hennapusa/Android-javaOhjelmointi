@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyApplication</string>
+    <string name="helloBtn_text">Click Hello</string>
+    <string name="hello_text">Hello Word!</string>
 </resources>
