@@ -3,4 +3,5 @@
     <string name="app_name">MyApplication sovellus</string>
     <string name="helloBtn_text">Klikkaa tervehdys</string>
     <string name="hello_text">Hei Maailma!</string>
+    <string name="gameButton">Pelaa</string>
 </resources>

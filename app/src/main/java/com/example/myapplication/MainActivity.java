@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,16 +27,34 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
 
+                handleClickEvents(v);
+
+                }
+        });
+        gameButton = findViewById(R.id.gameButton);
+        gameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                handleClickEvents(view);
+            }
+        });
+
+    }
+    public void handleClickEvents(View v){
+        switch(v.getId()){
+            case R.id.gameButton:
+                Intent i= new Intent(this,Guess.class);
+                startActivity(i);
+
+                break;
+
+            case R.id.hello_button:
                 if (welcomeTextView.getVisibility() == View.VISIBLE)
                     welcomeTextView.setVisibility(View.INVISIBLE);
 
                 else if(welcomeTextView.getVisibility() == View.INVISIBLE)
-                welcomeTextView.setVisibility(View.VISIBLE);
-
-
-                }
-
-
-        });
+                    welcomeTextView.setVisibility(View.VISIBLE);
+        }
     }
 }

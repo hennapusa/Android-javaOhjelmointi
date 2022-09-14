@@ -3,12 +3,13 @@ package com.example.myapplication;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+public class Guess extends AppCompatActivity {
 
-public class Pelidemo extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pelidemo);
-    }
-}
+        setContentView(R.layout.activity_guess);
+
+            }
+        }
