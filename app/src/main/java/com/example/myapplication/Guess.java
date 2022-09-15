@@ -81,7 +81,9 @@ public class Guess extends AppCompatActivity {
 
             case R.id.restart_btn:
                 finish();
+                overridePendingTransition(0,0);
                 startActivity(getIntent());
+                overridePendingTransition(0,0);
 
             default:
 
