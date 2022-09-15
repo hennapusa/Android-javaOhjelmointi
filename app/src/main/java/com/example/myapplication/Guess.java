@@ -1,16 +1,17 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 public class Guess extends AppCompatActivity {
-    private Button Button1;
-    private Button Button2;
-    private Button Button3;
-    private Button Button4;
+    private ImageButton game_Button1;
+    private ImageButton game_Button2;
+    private ImageButton game_Button3;
+    private ImageButton game_Button4;
 
     public class generateRandom {
 
@@ -18,6 +19,7 @@ public class Guess extends AppCompatActivity {
             //satunnaisluku?
             Random rand = new Random();
             int rand_int1 = rand.nextInt(5);
+            System.out.println("Random Integers: " + rand_int1);
         }
     }
 
@@ -26,6 +28,48 @@ public class Guess extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess);
 
+        game_Button1 = findViewById(R.id.imageButton1);
+        game_Button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {handleClickEvents(view);}
+        });
 
+        game_Button2 = findViewById(R.id.imageButton3);
+        game_Button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {handleClickEvents(view);}
+        });
+        game_Button3 = findViewById(R.id.imageButton3);
+        game_Button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {handleClickEvents(view);}
+        });
+        game_Button4 = findViewById(R.id.imageButton4);
+        game_Button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {handleClickEvents(view);}
+        });
+    }
+    public void handleClickEvents(View view){
+        switch (view.getId()){
+            case R.id.imageButton1:
+                game_Button1.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.imageButton2:
+                game_Button2.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.imageButton3:
+                game_Button3.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.imageButton4:
+                game_Button4.setVisibility(View.INVISIBLE);
+                break;
+
+            default:
+
+        }
     }
 }
