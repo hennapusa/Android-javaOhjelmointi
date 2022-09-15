@@ -6,12 +6,15 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Random;
 public class Guess extends AppCompatActivity {
     private ImageButton game_Button1;
     private ImageButton game_Button2;
     private ImageButton game_Button3;
     private ImageButton game_Button4;
+    private FloatingActionButton restartBtn;
 
     public class generateRandom {
 
@@ -49,6 +52,14 @@ public class Guess extends AppCompatActivity {
             @Override
             public void onClick(View view) {handleClickEvents(view);}
         });
+
+        restartBtn = findViewById(R.id.restart_btn);
+        restartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { handleClickEvents(view);
+
+            }
+        });
     }
     public void handleClickEvents(View view){
         switch (view.getId()){
@@ -68,8 +79,13 @@ public class Guess extends AppCompatActivity {
                 game_Button4.setVisibility(View.INVISIBLE);
                 break;
 
+            case R.id.restart_btn:
+                finish();
+                startActivity(getIntent());
+
             default:
 
         }
+
     }
 }
