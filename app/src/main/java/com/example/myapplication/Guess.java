@@ -75,7 +75,6 @@ public class Guess extends AppCompatActivity {
 
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation1);
         ImageView image = (ImageView) findViewById(R.id.imageButton1);
-        image.startAnimation(animation);
 
         Random rand = new Random();
         rand_int1 = rand.nextInt(3)+1;
