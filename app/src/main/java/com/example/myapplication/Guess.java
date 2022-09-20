@@ -1,12 +1,15 @@
 package com.example.myapplication;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +25,11 @@ public class Guess extends AppCompatActivity {
     private FloatingActionButton restartBtn;
     int rand_int1;
     Animation animation;
+    int bestScore;
+    private static final String KEY_HS = "HighestScore: ";
+    private static final String TAG = "MyMessage";
+    SharedPreferences myPreferences;
+    private TextView scoreText;
 
 
 
@@ -30,6 +38,11 @@ public class Guess extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess);
 
+        //sisäinen tallennus
+        myPreferences = PreferenceManager.getDefaultSharedPreferences(Guess.this);
+        bestScore = myPreferences.getInt(KEY_HS, 0);
+        scoreText = findViewById(R.id.scoreBox);
+        scoreText.setText(this.getString(R.string.MyScore) +" : "+ bestScore);
 
 
         game_Button1 = findViewById(R.id.imageButton1);
@@ -72,12 +85,14 @@ public class Guess extends AppCompatActivity {
             }
 
         });
-
+        //animaatio
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation1);
         ImageView image = (ImageView) findViewById(R.id.imageButton1);
 
+        //satunnaisluku
         Random rand = new Random();
         rand_int1 = rand.nextInt(3)+1;
+
 
     }
 
@@ -86,12 +101,19 @@ public class Guess extends AppCompatActivity {
             case R.id.imageButton1:
                 game_Button1.setVisibility(View.INVISIBLE);
                 game_Button1.startAnimation((animation));
-                if(rand_int1 ==1){
+                if (rand_int1 == 1) {
                     game_Button1.setImageResource(R.mipmap.star);
                     game_Button1.setBackgroundColor(Color.YELLOW);
                     game_Button1.setVisibility(View.VISIBLE);
+                    game_Button2.setVisibility(View.INVISIBLE);
+                    game_Button3.setVisibility(View.INVISIBLE);
+                    game_Button4.setVisibility(View.INVISIBLE);
+                    bestScore = bestScore+1;
+                    scoreText.setText(this.getString(R.string.MyScore) +" : "+ bestScore);
+                    SharedPreferences.Editor myEditor = myPreferences.edit();
+                    myEditor.putInt(KEY_HS, bestScore);
+                    myEditor.commit();
                 }
-
                 break;
 
             case R.id.imageButton2:
@@ -101,6 +123,14 @@ public class Guess extends AppCompatActivity {
                     game_Button2.setImageResource(R.mipmap.star);
                     game_Button2.setBackgroundColor(Color.YELLOW);
                     game_Button2.setVisibility(View.VISIBLE);
+                    game_Button1.setVisibility(View.INVISIBLE);
+                    game_Button3.setVisibility(View.INVISIBLE);
+                    game_Button4.setVisibility(View.INVISIBLE);
+                    bestScore = bestScore+1;
+                    scoreText.setText(this.getString(R.string.MyScore) +" : "+ bestScore);
+                    SharedPreferences.Editor myEditor = myPreferences.edit();
+                    myEditor.putInt(KEY_HS, bestScore);
+                    myEditor.commit();
                 }
 
                 break;
@@ -112,6 +142,14 @@ public class Guess extends AppCompatActivity {
                     game_Button3.setImageResource(R.mipmap.star);
                     game_Button3.setBackgroundColor(Color.YELLOW);
                     game_Button3.setVisibility(View.VISIBLE);
+                    game_Button1.setVisibility(View.INVISIBLE);
+                    game_Button2.setVisibility(View.INVISIBLE);
+                    game_Button4.setVisibility(View.INVISIBLE);
+                    bestScore = bestScore+1;
+                    scoreText.setText(this.getString(R.string.MyScore) +" : "+ bestScore);
+                    SharedPreferences.Editor myEditor = myPreferences.edit();
+                    myEditor.putInt(KEY_HS, bestScore);
+                    myEditor.commit();
                 }
                 break;
 
@@ -122,6 +160,14 @@ public class Guess extends AppCompatActivity {
                     game_Button4.setImageResource(R.mipmap.star);
                     game_Button4.setBackgroundColor(Color.YELLOW);
                     game_Button4.setVisibility(View.VISIBLE);
+                    game_Button1.setVisibility(View.INVISIBLE);
+                    game_Button2.setVisibility(View.INVISIBLE);
+                    game_Button3.setVisibility(View.INVISIBLE);
+                    bestScore = bestScore+1;
+                    scoreText.setText(this.getString(R.string.MyScore) +" : "+ bestScore);
+                    SharedPreferences.Editor myEditor = myPreferences.edit();
+                    myEditor.putInt(KEY_HS, bestScore);
+                    myEditor.commit();
                 }
                 break;
 
@@ -130,6 +176,7 @@ public class Guess extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
+
 
             default:
 
