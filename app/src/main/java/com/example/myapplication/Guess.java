@@ -38,6 +38,13 @@ public class Guess extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess);
 
+        //animaatio
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation1);
+        ImageView image = (ImageView) findViewById(R.id.imageButton1);
+
+        //satunnaisluku
+        Random rand = new Random();
+        rand_int1 = rand.nextInt(3)+1;
         //sisäinen tallennus
         myPreferences = PreferenceManager.getDefaultSharedPreferences(Guess.this);
         bestScore = myPreferences.getInt(KEY_HS, 0);
@@ -85,14 +92,6 @@ public class Guess extends AppCompatActivity {
             }
 
         });
-        //animaatio
-        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation1);
-        ImageView image = (ImageView) findViewById(R.id.imageButton1);
-
-        //satunnaisluku
-        Random rand = new Random();
-        rand_int1 = rand.nextInt(3)+1;
-
 
     }
 
