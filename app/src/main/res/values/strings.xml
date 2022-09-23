@@ -10,4 +10,8 @@
     <string name="string_score">stringScore</string>
     <string name="MyScore">Score</string>
     <string name="gameTextView">game</string>
+    <string name="textField1">latitude</string>
+    <string name="textField2">longitude</string>
+    <string name="textField3">Address</string>
+    <string name="mapButton">MapButton</string>
 </resources>

@@ -1,11 +1,15 @@
 package com.example.myapplication.ui.dashboard;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,30 +20,48 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentDashboardBinding;
 
+import java.util.List;
+import java.util.Locale;
 
-public class DashboardFragment extends Fragment {
+
+public class DashboardFragment extends Fragment implements LocationListener{
 
     private FragmentDashboardBinding binding;
+
     LocationManager locationManager;
     DashboardViewModel dashboardViewModel;
     Location lastLocation;
+    Locale finnish = new Locale("fi", "FI");
+    private static int PERMISSION_CODE;
+    private String permissions;
+    private TextView locationLatitude;
+    private TextView locationLongitude;
+    private TextView locationAddress;
+    private static final String TAG = "KÄÄÄK";
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
-
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textView1;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        locationLatitude = root.findViewById(R.id.textView_latitude);
+        locationLongitude = root.findViewById(R.id.textView_longnitude);
+        locationAddress = root.findViewById(R.id.textView_address);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
+
+        //final TextView textView = binding.textView1;
+        //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        return root;
     }
+
 
     @Override
     public void onStart() {
@@ -54,23 +76,62 @@ public class DashboardFragment extends Fragment {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+
+
+            //ActivityCompat.requestPermissions(getActivity(), permissions, REQUEST_FINE_LOCATION);
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 0, (LocationListener) getContext());
 
-        Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 0, this);
+
+        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (lastLocation != null) {
+            Log.e(TAG, Double.toString(lastLocation.getLatitude()));
+            Log.e(TAG, Double.toString(lastLocation.getLongitude()));
+            locationLatitude.setText(Double.toString(lastLocation.getLatitude()));
+            locationLongitude.setText(Double.toString(lastLocation.getLongitude()));
+
+
+        }
+        try {
+            Geocoder geocoder;
+            List<Address> addresses;
+            Locale finnish = new Locale("fi", "FI");
+            geocoder = new Geocoder(getContext(), finnish);
+            addresses = geocoder.getFromLocation(lastLocation.getLatitude(), lastLocation.getLongitude(),
+                    1);
+
+            Address address =addresses.get(0);
+            String currentLocation = addresses.get(0).getAddressLine(0);
+            locationAddress.setText(currentLocation);
+
+            //String city = addresses.get(0).getLocality();
+           // String country = addresses.get(0).getCountryName();
+            //String postalCode = addresses.get(0).getPostalCode();
+
+
+        }
+        catch (Exception e){
+            Log.e(TAG,"TOIMI!!!!!!!!");
+        }
     }
+
 
     @Override
     public void onStop() {
         super.onStop();
 
-        //locationManager.removeUpdates(this);
+        locationManager.removeUpdates(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+
     }
 }

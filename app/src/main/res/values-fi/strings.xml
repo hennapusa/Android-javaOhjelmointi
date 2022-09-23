@@ -11,4 +11,8 @@
     <string name="string_score">pisteet</string>
     <string name="MyScore">omat pisteet</string>
     <string name="gameTextView">peli</string>
+    <string name="textField1">leveysaste</string>
+    <string name="textField2">pituusaste</string>
+    <string name="textField3">osoite</string>
+    <string name="mapButton">Näytä kartalla</string>
 </resources>
