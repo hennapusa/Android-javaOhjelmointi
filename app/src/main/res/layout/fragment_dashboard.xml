@@ -35,7 +35,7 @@
             android:id="@+id/textView_latitude"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:text="leveys"
+            android:text="leveysaste"
             android:paddingTop="50dp"
             android:layout_marginBottom="50dp"
 
@@ -45,7 +45,7 @@
             android:id="@+id/textView_longnitude"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:text="pituus"
+            android:text="pituusaste"
             android:paddingTop="50dp"
             android:layout_marginBottom="50dp"
             />
@@ -64,7 +64,6 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:layout_marginTop="50dp"
-            android:background="@color/design_default_color_secondary"
             android:text="Open map"/>
 
 

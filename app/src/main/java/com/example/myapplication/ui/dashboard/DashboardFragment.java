@@ -2,17 +2,20 @@ package com.example.myapplication.ui.dashboard;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,20 +30,19 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class DashboardFragment extends Fragment implements LocationListener{
+public class DashboardFragment extends Fragment implements LocationListener {
 
     private FragmentDashboardBinding binding;
 
     LocationManager locationManager;
-    DashboardViewModel dashboardViewModel;
+    //DashboardViewModel dashboardViewModel;
     Location lastLocation;
     Locale finnish = new Locale("fi", "FI");
-    private static int PERMISSION_CODE;
-    private String permissions;
     private TextView locationLatitude;
     private TextView locationLongitude;
     private TextView locationAddress;
     private static final String TAG = "KÄÄÄK";
+    private Button button_button;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,12 +56,27 @@ public class DashboardFragment extends Fragment implements LocationListener{
         locationLongitude = root.findViewById(R.id.textView_longnitude);
         locationAddress = root.findViewById(R.id.textView_address);
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        button_button= root.findViewById(R.id.button_button);
 
 
         //final TextView textView = binding.textView1;
         //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+
+        button_button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+         Uri gmmIntentUri = Uri.parse("geo:" + lastLocation.getLatitude() + "," + lastLocation.getLongitude());
+         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+         mapIntent.setPackage("com.google.android.apps.maps");
+
+
+         startActivity(mapIntent);
+         }
+         });
+
         return root;
+
     }
 
 
@@ -82,7 +99,7 @@ public class DashboardFragment extends Fragment implements LocationListener{
             return;
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
 
         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (lastLocation != null) {
@@ -101,18 +118,17 @@ public class DashboardFragment extends Fragment implements LocationListener{
             addresses = geocoder.getFromLocation(lastLocation.getLatitude(), lastLocation.getLongitude(),
                     1);
 
-            Address address =addresses.get(0);
+            Address address = addresses.get(0);
             String currentLocation = addresses.get(0).getAddressLine(0);
             locationAddress.setText(currentLocation);
 
             //String city = addresses.get(0).getLocality();
-           // String country = addresses.get(0).getCountryName();
+            // String country = addresses.get(0).getCountryName();
             //String postalCode = addresses.get(0).getPostalCode();
 
 
-        }
-        catch (Exception e){
-            Log.e(TAG,"TOIMI!!!!!!!!");
+        } catch (Exception e) {
+            Log.e(TAG, "TOIMI!!!!!!!!");
         }
     }
 
@@ -132,6 +148,32 @@ public class DashboardFragment extends Fragment implements LocationListener{
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+        Log.e(TAG, Double.toString(location.getLatitude()));
+        Log.e(TAG, Double.toString(location.getLongitude()));
+        locationLatitude.setText(Double.toString(location.getLatitude()));
+        locationLongitude.setText(Double.toString(location.getLongitude()));
 
+
+        try {
+            Geocoder geocoder;
+            List<Address> addresses;
+            //Locale finnish = new Locale("fi", "FI");
+            geocoder = new Geocoder(getContext(), finnish);
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(),
+                    1);
+
+            Address address = addresses.get(0);
+            String currentLocation = addresses.get(0).getAddressLine(0);
+            locationAddress.setText(currentLocation);
+
+            //String city = addresses.get(0).getLocality();
+            // String country = addresses.get(0).getCountryName();
+            //String postalCode = addresses.get(0).getPostalCode();
+
+
+        } catch (Exception e) {
+
+        }
     }
+
 }
