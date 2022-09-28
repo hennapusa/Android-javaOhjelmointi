@@ -113,7 +113,7 @@ public class DashboardFragment extends Fragment implements LocationListener {
         try {
             Geocoder geocoder;
             List<Address> addresses;
-            Locale finnish = new Locale("fi", "FI");
+            //Locale finnish = new Locale("fi", "FI");
             geocoder = new Geocoder(getContext(), finnish);
             addresses = geocoder.getFromLocation(lastLocation.getLatitude(), lastLocation.getLongitude(),
                     1);
@@ -128,7 +128,7 @@ public class DashboardFragment extends Fragment implements LocationListener {
 
 
         } catch (Exception e) {
-            Log.e(TAG, "TOIMI!!!!!!!!");
+            Log.e(TAG, "EI ADDRESS TOIMI!!!!!!!!");
         }
     }
 
