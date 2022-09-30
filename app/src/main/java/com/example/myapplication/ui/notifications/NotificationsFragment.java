@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.notifications;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +24,12 @@ public class NotificationsFragment extends Fragment {
     //private Button buttonStart;
     //private Button buttonStop;
     //private Button buttonPause;
-    //private CountDownTimer CountDownTimer;
+    private CountDownTimer cdt;
     int valueOnPicker1 =0;
     NumberPicker numPicker;
     private MaterialButtonToggleGroup materialButtonToggleGroup;
     public static final String TAG ="MyAppMessage";
+    private TextView textView;
 
 
 
@@ -43,9 +45,9 @@ public class NotificationsFragment extends Fragment {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
+        //final TextView textView = binding.textNotifications;
+        //notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        textView = root.findViewById(R.id.text_notifications);
         numPicker = root.findViewById(R.id.numberpicker);
         numPicker.setDisplayedValues(myValues);
         numPicker.setMinValue(0);
@@ -67,17 +69,32 @@ public class NotificationsFragment extends Fragment {
                             if (checkedId == R.id.buttonPause) {
                                 Log.e(TAG, "pausea painettu" + String.valueOf(numPicker.getValue()));
                                 //numPicker.getValue();
+                                cdt.cancel();
 
                             } else if (checkedId == R.id.buttonStart) {
                                 Log.e(TAG, "starttia painettu"+ String.valueOf(numPicker.getValue()));
+                                cdt = new CountDownTimer(numPicker.getValue() * 1000, 1000) {
+                                    @Override
+                                    public void onTick(long l) {
+                                        textView.setText("seconds remaining: " + l / 1000);
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        textView.setText("done!");
+                                    }
+
+                                }.start();
 
                             } else if (checkedId == R.id.buttonStop) {
                                // Log.e(TAG, "stop painettu"+ String.valueOf(numPicker.setVa));
                                 numPicker.setValue(0);
+                                cdt.cancel();
                             }
                         }
                     }
                 });
+
         return root;
     }
 
