@@ -1,11 +1,16 @@
 package com.example.myapplication.ui.notifications;
 
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -20,23 +25,22 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-    // private static final long START_TIME_IN_MILLIS = 60000;
-    //private Button buttonStart;
-    //private Button buttonStop;
-    //private Button buttonPause;
     private CountDownTimer cdt;
     int valueOnPicker1 =0;
     NumberPicker numPicker;
     private MaterialButtonToggleGroup materialButtonToggleGroup;
     public static final String TAG ="MyAppMessage";
     private TextView textView;
-
+    Uri ringtoneUri;
+    Ringtone alarm;
+    Animation animation;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
+
 
         String[] myValues = new String[61];
         for (int i = 0; i < myValues.length; i++) {
@@ -47,6 +51,13 @@ public class NotificationsFragment extends Fragment {
 
         //final TextView textView = binding.textNotifications;
         //notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        alarm = RingtoneManager.getRingtone(getContext(), ringtoneUri);
+
+        animation = AnimationUtils.loadAnimation(getContext(), R.anim.animation);
+
+
         textView = root.findViewById(R.id.text_notifications);
         numPicker = root.findViewById(R.id.numberpicker);
         numPicker.setDisplayedValues(myValues);
@@ -71,25 +82,32 @@ public class NotificationsFragment extends Fragment {
                                 //numPicker.getValue();
                                 cdt.cancel();
 
+
                             } else if (checkedId == R.id.buttonStart) {
                                 Log.e(TAG, "starttia painettu"+ String.valueOf(numPicker.getValue()));
                                 cdt = new CountDownTimer(numPicker.getValue() * 1000, 1000) {
                                     @Override
                                     public void onTick(long l) {
                                         textView.setText("seconds remaining: " + l / 1000);
+
                                     }
 
                                     @Override
                                     public void onFinish() {
-                                        textView.setText("done!");
-                                    }
+                                        textView.setText("END!");
+                                        alarm.play();
+                                        binding.textNotifications.startAnimation(animation);
 
+                                    }
                                 }.start();
+
+
 
                             } else if (checkedId == R.id.buttonStop) {
                                // Log.e(TAG, "stop painettu"+ String.valueOf(numPicker.setVa));
                                 numPicker.setValue(0);
                                 cdt.cancel();
+                                alarm.stop();
                             }
                         }
                     }
