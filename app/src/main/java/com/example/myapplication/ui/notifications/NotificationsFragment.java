@@ -26,7 +26,7 @@ public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
     private CountDownTimer cdt;
-    int valueOnPicker1 =0;
+    int valueOnPicker1 = 0;
     NumberPicker numPicker;
     private MaterialButtonToggleGroup materialButtonToggleGroup;
     public static final String TAG ="MyAppMessage";
@@ -34,6 +34,8 @@ public class NotificationsFragment extends Fragment {
     Uri ringtoneUri;
     Ringtone alarm;
     Animation animation;
+    int pauseTime;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,7 +59,7 @@ public class NotificationsFragment extends Fragment {
 
         animation = AnimationUtils.loadAnimation(getContext(), R.anim.animation);
 
-
+        pauseTime = 0;
         textView = root.findViewById(R.id.text_notifications);
         numPicker = root.findViewById(R.id.numberpicker);
         numPicker.setDisplayedValues(myValues);
@@ -81,20 +83,28 @@ public class NotificationsFragment extends Fragment {
                                 Log.e(TAG, "pausea painettu" + String.valueOf(numPicker.getValue()));
                                 //numPicker.getValue();
                                 cdt.cancel();
+                                textView.setText("paused!");
 
 
                             } else if (checkedId == R.id.buttonStart) {
-                                Log.e(TAG, "starttia painettu"+ String.valueOf(numPicker.getValue()));
-                                cdt = new CountDownTimer(numPicker.getValue() * 1000, 1000) {
+                                Log.e(TAG, "starttia painettu" + String.valueOf(numPicker.getValue()));
+                                int startTime = 0;
+                                if(pauseTime > 0){
+                                    startTime = pauseTime;
+                                }else {
+                                    startTime = numPicker.getValue() * 1000;
+
+                                }
+                                cdt = new CountDownTimer(startTime, 1000) {
                                     @Override
                                     public void onTick(long l) {
                                         textView.setText("seconds remaining: " + l / 1000);
-
+                                        pauseTime = (int)l;
                                     }
 
                                     @Override
                                     public void onFinish() {
-                                        textView.setText("END!");
+                                        textView.setText("end!");
                                         alarm.play();
                                         binding.textNotifications.startAnimation(animation);
 
@@ -102,13 +112,16 @@ public class NotificationsFragment extends Fragment {
                                 }.start();
 
 
-
                             } else if (checkedId == R.id.buttonStop) {
-                               // Log.e(TAG, "stop painettu"+ String.valueOf(numPicker.setVa));
+                                Log.e(TAG, "stop painettu" + String.valueOf(numPicker.getValue()));
                                 numPicker.setValue(0);
                                 cdt.cancel();
                                 alarm.stop();
+                                binding.textNotifications.clearAnimation();
+                                textView.setText("Stopped!");
+
                             }
+
                         }
                     }
                 });

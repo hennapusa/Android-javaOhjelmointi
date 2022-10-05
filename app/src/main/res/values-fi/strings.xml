@@ -5,9 +5,9 @@
     <string name="hello_text">Hei Maailma!</string>
     <string name="gameButton">Pelaa</string>
     <string name="title_home">koti</string>
-    <string name="title_dashboard">Työpöytä</string>
+    <string name="title_dashboard">Kartta</string>
     <string name="title_activity_main2">Päänäkymä</string>
-    <string name="title_notifications">Ilmoitukset</string>
+    <string name="title_notifications">Ajastin</string>
     <string name="string_score">pisteet</string>
     <string name="MyScore">omat pisteet</string>
     <string name="gameTextView">peli</string>
