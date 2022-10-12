@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.Guess;
+import com.example.myapplication.Interface;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
@@ -22,6 +23,7 @@ public class HomeFragment extends Fragment {
     private Button welcomeButton;
     private View welcomeTextView;
     private Button gameButton;
+    private Button ytjButton;
     public static final String TAG ="MyAppMessage";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,6 +52,14 @@ public class HomeFragment extends Fragment {
                 handleClickEvents(view);
             }
         });
+        ytjButton = root.findViewById(R.id.ytjButton);
+        ytjButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                handleClickEvents(view);
+            }
+        });
 
 
         //final TextView textView = binding.textHome;
@@ -67,6 +77,12 @@ public class HomeFragment extends Fragment {
             case R.id.gameButton:
                 Intent i= new Intent(getActivity(), Guess.class);
                 startActivity(i);
+
+                break;
+
+            case R.id.ytjButton:
+                Intent I= new Intent(getActivity(), Interface.class);
+                startActivity(I);
 
                 break;
 
