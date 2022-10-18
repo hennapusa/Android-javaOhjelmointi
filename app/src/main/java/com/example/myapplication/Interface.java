@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -20,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 
 public class Interface extends AppCompatActivity {
 
@@ -28,6 +32,10 @@ public class Interface extends AppCompatActivity {
     public static final String TAG = "MyAppMessage";
     private RequestQueue requestQueue;
     private String url;
+    private RecycleAdapter adapter;
+    private RecyclerView recyclerView;
+
+    private ArrayList<Company> companies = new ArrayList<Company>();
 
 
     @Override
@@ -35,7 +43,10 @@ public class Interface extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interface);
 
-        
+        recyclerView = (RecyclerView) findViewById(R.id.cardList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
         searchText = findViewById(R.id.editText);
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -64,32 +75,57 @@ public class Interface extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             Log.i(TAG, url);
+                             companies = new ArrayList<Company>();
                             JSONArray responseItems = (JSONArray) response.getJSONArray("results");
                             for (int i = 0; i < responseItems.length(); i++) {
+                                Company currentCompany = new Company();
+
                                 JSONObject obj = responseItems.getJSONObject(i);
                                 String A = obj.getString("businessId");
                                 String B = obj.getString("name");
                                 String C = obj.getString("registrationDate");
                                 String D = obj.getString("companyForm");
+                                currentCompany.setBusinessId(A);
+                                currentCompany.setName(B);
+                                currentCompany.setRegistrationDate(C);
+                                currentCompany.setCompanyForm(D);
+
                                 Log.e(TAG,A + " " + B + " " + C + D);
+                                companies.add(currentCompany);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        setupView();
+
                     }
+
+
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        Log.e(TAG,"Virhe");
+                        Log.e(TAG,"Tuleeko virhe");
 
                     }
 
+
                 });
+
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         requestQueue.add(jsonObjectRequest);
-        Log.e(TAG,"Onnistuu");
+        Log.e(TAG,"Onnistuuko");
+
+
+    }
+    private void setupView(){
+    //mProgressBar.setVisibility(view.GONE);
+
+        adapter = new RecycleAdapter(companies);
+        adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(adapter);
+
 
 
     }
