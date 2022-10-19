@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.Guess;
 import com.example.myapplication.Interface;
 import com.example.myapplication.R;
+import com.example.myapplication.Tentti;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -24,7 +25,9 @@ public class HomeFragment extends Fragment {
     private View welcomeTextView;
     private Button gameButton;
     private Button ytjButton;
+    private Button TenttiButton;
     public static final String TAG ="MyAppMessage";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +63,14 @@ public class HomeFragment extends Fragment {
                 handleClickEvents(view);
             }
         });
+        TenttiButton = root.findViewById(R.id.tenttiButton);
+        TenttiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                handleClickEvents(view);
+            }
+        });
 
 
         //final TextView textView = binding.textHome;
@@ -83,6 +94,12 @@ public class HomeFragment extends Fragment {
             case R.id.ytjButton:
                 Intent I= new Intent(getActivity(), Interface.class);
                 startActivity(I);
+
+                break;
+
+            case R.id.tenttiButton:
+                Intent O= new Intent(getActivity(), Tentti.class);
+                startActivity(O);
 
                 break;
 
