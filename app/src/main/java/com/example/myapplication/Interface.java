@@ -75,7 +75,7 @@ public class Interface extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             Log.i(TAG, url);
-                             companies = new ArrayList<Company>();
+                            companies = new ArrayList<Company>();
                             JSONArray responseItems = (JSONArray) response.getJSONArray("results");
                             for (int i = 0; i < responseItems.length(); i++) {
                                 Company currentCompany = new Company();
@@ -90,13 +90,17 @@ public class Interface extends AppCompatActivity {
                                 currentCompany.setRegistrationDate(C);
                                 currentCompany.setCompanyForm(D);
 
-                                Log.e(TAG,A + " " + B + " " + C + D);
+                                Log.e(TAG, A + " " + B + " " + C + D);
                                 companies.add(currentCompany);
+                                // adapter = new RecycleAdapter(companies);
+                                // RecyclerView.setAdapter(adapter);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         setupView();
+
 
                     }
 
@@ -106,7 +110,7 @@ public class Interface extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        Log.e(TAG,"Tuleeko virhe");
+                        Log.e(TAG, "Tuleeko virhe");
 
                     }
 
@@ -115,22 +119,23 @@ public class Interface extends AppCompatActivity {
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         requestQueue.add(jsonObjectRequest);
-        Log.e(TAG,"Onnistuuko");
+        Log.e(TAG, "Onnistuuko");
 
 
     }
-    private void setupView(){
-    //mProgressBar.setVisibility(view.GONE);
+
+    private void setupView() {
+        //mProgressBar.setVisibility(view.GONE);
 
         adapter = new RecycleAdapter(companies);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
 
-
     }
-
 }
+
+
 
 
 

@@ -88,9 +88,6 @@ import java.util.ArrayList;
 }
 */
 
-//HAKEE LOGCATTIIN YRITYKSET ENNEN VIRHEILMOITUSTA, MUTTA TÄMÄN JÄLKEEN KAATUU..
-// TAI HYPPÄÄ TAKASIN ETUSIVULLE
-// AJAA KYLLÄ OHJELMAN ONNISTUNEESTI LÄPI......
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
 
@@ -101,6 +98,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
         TextView textViewName;
         TextView textViewVersion;
+
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -143,4 +141,5 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
     public int getItemCount() {
         return dataSet.size();
     }
+
 }

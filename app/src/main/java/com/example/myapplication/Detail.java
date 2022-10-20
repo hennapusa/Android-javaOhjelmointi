@@ -9,6 +9,7 @@ package com.example.myapplication;
             this.mPosition = mPosition;
         }
 
+
         public String getName() {
         return mName;
     }
