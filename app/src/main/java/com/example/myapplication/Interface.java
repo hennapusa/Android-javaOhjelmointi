@@ -34,6 +34,7 @@ public class Interface extends AppCompatActivity {
     private String url;
     private RecycleAdapter adapter;
     private RecyclerView recyclerView;
+  //TextView errorText;
 
     private ArrayList<Company> companies = new ArrayList<Company>();
 
@@ -47,12 +48,17 @@ public class Interface extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
+        //errorText = findViewById(R.id.errorText);
+
         searchText = findViewById(R.id.editText);
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                findViewById((R.id.loader)).setVisibility(View.VISIBLE);
+                //findViewById((R.id.errorText)).setVisibility(View.GONE);
+
                 String searchTerm = String.valueOf(searchText.getText());
                 Log.i(TAG, searchTerm);
 
@@ -111,13 +117,18 @@ public class Interface extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
                         Log.e(TAG, "Tuleeko virhe");
+                        //recyclerView.setVisibility(View.GONE);
+                        //recyclerView.setVisibility(View.INVISIBLE);
+                       // errorText.setText("No result");
+                        //findViewById(R.id.loader).setVisibility(View.GONE);
+
 
                     }
 
 
                 });
 
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10 * 1000, 1, 1.0f));
         requestQueue.add(jsonObjectRequest);
         Log.e(TAG, "Onnistuuko");
 
@@ -125,11 +136,13 @@ public class Interface extends AppCompatActivity {
     }
 
     private void setupView() {
-        //mProgressBar.setVisibility(view.GONE);
+
 
         adapter = new RecycleAdapter(companies);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
+
+        findViewById(R.id.loader).setVisibility(View.GONE);
 
 
     }
